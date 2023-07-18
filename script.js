@@ -38,9 +38,11 @@ function generateQRCode() {
                 // プレビューを表示
                 const qrCodePreview = document.getElementById('qrCodePreview');
                 qrCodePreview.src = qrCodeImage.src;
+                qrCodePreview.style.display = 'block';
 
                 const maskedImagePreview = document.getElementById('maskedImagePreview');
                 maskedImagePreview.src = canvas.toDataURL();
+                maskedImagePreview.style.display = 'block';
             };
             image.src = e.target.result;
         };
