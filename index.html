@@ -8,8 +8,14 @@
     <input type="file" id="imageInput">
     <button onclick="generateQRCode()">QRコードを作成してマスクする</button>
     <div id="previewContainer">
-        <img id="qrCodePreview">
-        <img id="maskedImagePreview">
+        <div>
+            <p>QRコードプレビュー</p>
+            <img id="qrCodePreview">
+        </div>
+        <div>
+            <p>マスクされた画像プレビュー</p>
+            <img id="maskedImagePreview">
+        </div>
     </div>
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
