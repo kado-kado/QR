@@ -36,20 +36,11 @@ function generateQRCode() {
                 ctx.drawImage(qrCodeImage, 0, 0, qrCodeSize, qrCodeSize);
 
                 // プレビューを表示
-                const previewContainer = document.getElementById('previewContainer');
                 const qrCodePreview = document.getElementById('qrCodePreview');
                 qrCodePreview.src = qrCodeImage.src;
-                qrCodePreview.style.display = 'inline-block';
 
                 const maskedImagePreview = document.getElementById('maskedImagePreview');
                 maskedImagePreview.src = canvas.toDataURL();
-                maskedImagePreview.style.display = 'inline-block';
-
-                // ダウンロードリンクを更新
-                const downloadLink = document.getElementById('downloadLink');
-                downloadLink.href = maskedImagePreview.src;
-                downloadLink.download = 'masked_image.png';
-                downloadLink.style.display = 'block';
             };
             image.src = e.target.result;
         };
