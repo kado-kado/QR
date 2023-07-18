@@ -40,6 +40,7 @@ function generateCombinedImage() {
                 const downloadLink = document.getElementById('downloadLink');
                 downloadLink.href = canvas.toDataURL();
                 downloadLink.download = 'combined_image.png';
+                downloadLink.innerText = '画像をダウンロード'; // テキストを表示する
                 downloadLink.style.display = 'block';
             };
             image.src = e.target.result;
