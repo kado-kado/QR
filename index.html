@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>QRコード生成とマスク</title>
+    <title>QRコードと画像の合成</title>
 </head>
 <body>
     <input type="text" id="urlInput" placeholder="QRコードにするURLを入力してください">
     <input type="file" id="imageInput">
-    <button onclick="generateQRCode()">QRコードを作成する</button>
-    <button onclick="maskImageWithQRCode()">画像をマスクする</button>
+    <button onclick="generateCombinedImage()">QRコードと画像を合成</button>
     <div id="previewContainer">
-        <img id="qrCodePreview" style="display: none;">
-        <img id="maskedImagePreview" style="display: none;">
+        <img id="combinedImagePreview" style="display: none;">
     </div>
 
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
