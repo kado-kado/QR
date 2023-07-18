@@ -1,18 +1,14 @@
-// QRコード生成
+// QRコード生成とマスク
 function generateQRCode() {
-    const qrCodeCanvas = document.getElementById('qrCodeCanvas');
-    const qrCodeContainer = document.getElementById('qrCodeContainer');
-    qrCodeContainer.style.display = 'block';
-
     const qrCodeUrl = document.getElementById('urlInput').value; // 入力したURLを取得
     const qrCodeSize = 600;
-    const qrCode = new QRCode(qrCodeCanvas, {
-        text: qrCodeUrl,
-        width: qrCodeSize,
-        height: qrCodeSize,
-    });
-}
-    // 画像の読み込みとマスク
+    const qrCode = new QRCode(qrCodeSize, qrCodeSize);
+    qrCode.makeCode(qrCodeUrl);
+
+    const qrCodeCanvas = qrCode._el.querySelector('canvas');
+    const qrCodeImage = new Image();
+    qrCodeImage.src = qrCodeCanvas.toDataURL();
+
     const imageInput = document.getElementById('imageInput');
     const file = imageInput.files[0];
 
@@ -22,9 +18,9 @@ function generateQRCode() {
             const image = new Image();
             image.onload = function () {
                 const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
                 canvas.width = qrCodeSize;
                 canvas.height = qrCodeSize;
+                const ctx = canvas.getContext('2d');
 
                 // 画像を600pxに縮小
                 const aspectRatio = image.width / image.height;
@@ -37,17 +33,23 @@ function generateQRCode() {
                 ctx.drawImage(image, 0, 0, newWidth, newHeight, xOffset, 0, newWidth, newHeight);
 
                 // QRコードをマスク
-                const qrCodeImageData = qrCodeCanvas.toDataURL();
-                const qrCodeImage = new Image();
-                qrCodeImage.onload = function () {
-                    ctx.drawImage(qrCodeImage, 0, 0, qrCodeSize, qrCodeSize);
-                    const resultImageUrl = canvas.toDataURL();
-                    const downloadLink = document.getElementById('downloadLink');
-                    downloadLink.href = resultImageUrl;
-                    downloadLink.download = 'masked_qr_code.png';
-                    downloadLink.style.display = 'block';
-                };
-                qrCodeImage.src = qrCodeImageData;
+                ctx.drawImage(qrCodeImage, 0, 0, qrCodeSize, qrCodeSize);
+
+                // プレビューを表示
+                const previewContainer = document.getElementById('previewContainer');
+                const qrCodePreview = document.getElementById('qrCodePreview');
+                qrCodePreview.src = qrCodeImage.src;
+                qrCodePreview.style.display = 'inline-block';
+
+                const maskedImagePreview = document.getElementById('maskedImagePreview');
+                maskedImagePreview.src = canvas.toDataURL();
+                maskedImagePreview.style.display = 'inline-block';
+
+                // ダウンロードリンクを更新
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = maskedImagePreview.src;
+                downloadLink.download = 'masked_image.png';
+                downloadLink.style.display = 'block';
             };
             image.src = e.target.result;
         };
