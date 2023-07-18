@@ -6,9 +6,10 @@
 <body>
     <input type="text" id="urlInput" placeholder="QRコードにするURLを入力してください">
     <input type="file" id="imageInput">
-    <button onclick="generateQRCode()">QRコードを作成する</button>
-    <div id="qrCodeContainer">
-        <canvas id="qrCodeCanvas"></canvas>
+    <button onclick="generateQRCode()">QRコードを作成してマスクする</button>
+    <div id="previewContainer">
+        <img id="qrCodePreview" style="display: none;">
+        <img id="maskedImagePreview" style="display: none;">
     </div>
     <a id="downloadLink" style="display: none;">ダウンロード</a>
 
