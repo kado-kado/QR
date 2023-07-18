@@ -1,4 +1,7 @@
-// QRコード生成とマスク
+let qrCodeImageData = null;
+let imageFile = null;
+
+// QRコード生成
 function generateQRCode() {
     const qrCodeUrl = document.getElementById('urlInput').value; // 入力したURLを取得
     const qrCodeSize = 600;
@@ -6,46 +9,39 @@ function generateQRCode() {
     qrCode.makeCode(qrCodeUrl);
 
     const qrCodeCanvas = qrCode._el.querySelector('canvas');
-    const qrCodeImage = new Image();
-    qrCodeImage.src = qrCodeCanvas.toDataURL();
+    qrCodeImageData = qrCodeCanvas.toDataURL();
 
-    const imageInput = document.getElementById('imageInput');
-    const file = imageInput.files[0];
+    const qrCodePreview = document.getElementById('qrCodePreview');
+    qrCodePreview.src = qrCodeImageData;
+    qrCodePreview.style.display = 'block';
+}
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
+// 画像にQRコードをマスクする
+function maskImageWithQRCode() {
+    if (qrCodeImageData && imageFile) {
+        const qrCodeImage = new Image();
+        qrCodeImage.onload = function () {
+            const canvas = document.createElement('canvas');
+            canvas.width = qrCodeImage.width;
+            canvas.height = qrCodeImage.height;
+            const ctx = canvas.getContext('2d');
+
+            ctx.drawImage(qrCodeImage, 0, 0);
+
             const image = new Image();
             image.onload = function () {
-                const canvas = document.createElement('canvas');
-                canvas.width = qrCodeSize;
-                canvas.height = qrCodeSize;
-                const ctx = canvas.getContext('2d');
-
-                // 画像を600pxに縮小
-                const aspectRatio = image.width / image.height;
-                const newHeight = qrCodeSize;
-                const newWidth = newHeight * aspectRatio;
-                ctx.drawImage(image, 0, 0, newWidth, newHeight);
-
-                // 600x600に切り取り
-                const xOffset = (qrCodeSize - newWidth) / 2;
-                ctx.drawImage(image, 0, 0, newWidth, newHeight, xOffset, 0, newWidth, newHeight);
-
-                // QRコードをマスク
-                ctx.drawImage(qrCodeImage, 0, 0, qrCodeSize, qrCodeSize);
-
-                // プレビューを表示
-                const qrCodePreview = document.getElementById('qrCodePreview');
-                qrCodePreview.src = qrCodeImage.src;
-                qrCodePreview.style.display = 'block';
-
+                ctx.drawImage(image, 0, 0, qrCodeImage.width, qrCodeImage.height);
                 const maskedImagePreview = document.getElementById('maskedImagePreview');
                 maskedImagePreview.src = canvas.toDataURL();
                 maskedImagePreview.style.display = 'block';
             };
-            image.src = e.target.result;
+            image.src = URL.createObjectURL(imageFile);
         };
-        reader.readAsDataURL(file);
+        qrCodeImage.src = qrCodeImageData;
     }
 }
+
+// 画像を選択した際の処理
+document.getElementById('imageInput').addEventListener('change', function (event) {
+    imageFile = event.target.files[0];
+});
