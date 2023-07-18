@@ -4,14 +4,14 @@ function generateQRCode() {
     const qrCodeContainer = document.getElementById('qrCodeContainer');
     qrCodeContainer.style.display = 'block';
 
-    const qrCodeUrl = 'https://example.com'; // QRコードにするURLを指定
+    const qrCodeUrl = document.getElementById('urlInput').value; // 入力したURLを取得
     const qrCodeSize = 600;
     const qrCode = new QRCode(qrCodeCanvas, {
         text: qrCodeUrl,
         width: qrCodeSize,
         height: qrCodeSize,
     });
-
+}
     // 画像の読み込みとマスク
     const imageInput = document.getElementById('imageInput');
     const file = imageInput.files[0];
