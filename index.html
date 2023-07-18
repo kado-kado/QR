@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>QRコード</title>
+    <title>QRコード生成とマスク</title>
 </head>
 <body>
+    <input type="text" id="urlInput" placeholder="QRコードにするURLを入力してください">
     <input type="file" id="imageInput">
     <button onclick="generateQRCode()">QRコードを作成する</button>
     <div id="qrCodeContainer">
